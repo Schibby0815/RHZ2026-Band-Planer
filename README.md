@@ -1,6 +1,6 @@
-![Uploading Gemini_Generated_Image_68ga8868ga8868ga.png…]()
-
 RHZ 2026 - Band Planer
+
+<img width="300" height="300" alt="Gemini_Generated_Image_68ga8868ga8868ga" src="https://github.com/user-attachments/assets/41430003-61ae-4378-bb09-b7445c492bbc" />
 
 Inoffizieller Planer für das Rockharz 2026. Running Order, Wecker und Favoriten.
 
