@@ -1,3 +1,5 @@
+![Uploading Gemini_Generated_Image_68ga8868ga8868ga.png…]()
+
 RHZ 2026 - Band Planer
 
 Inoffizieller Planer für das Rockharz 2026. Running Order, Wecker und Favoriten.
