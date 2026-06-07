@@ -11,7 +11,7 @@ Merk-Funktion: Die App merkt sich dauerhaft, welche Tage du ein- oder ausgeklapp
 Late-Night-Fix: Richtige Einsortierung von Konzerten nach Mitternacht am Ende des Festival-Vortrags.
 Dauerhafte Favoriten: Markiere Bands per Herz-Symbol im lokalen Speicher.
 Pausen-Rechner: Automatische Anzeige von Freizeit-Pausen zwischen deinen Favoriten.
-Band-Wecker: Lokale Push-Benachrichtigung 5 Minuten vor dem Auftritt deiner Favoriten.
+Band-Wecker: Lokale Push-Benachrichtigung 5 Minuten vor dem Auftritt deiner Favoriten. (App benötigt dafür die Berechtigung für Benachrichtigungen um dir PUSH-Nachrichten zu senden)
 Design: Augenschonender Dunkelmodus für nachts & heller Natur-Grün-Look für die Sonne.
 
 ⚠️ DAS KANN DIE APP NICHT
