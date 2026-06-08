@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RHZPlaner2026">
         <activity
-            android:name=".MainActivity"
+            android:name="com.rhz2026bandplaner.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.RHZPlaner2026"
@@ -25,7 +25,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".NotificationReceiver" android:exported="false" />
+        <receiver android:name="com.rhz2026bandplaner.NotificationReceiver" android:exported="false" />
     </application>
 
 </manifest>

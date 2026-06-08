@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.rhzplaner2026"
+    namespace = "com.rhz2026bandplaner"
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "com.example.rhzplaner2026"
+        applicationId = "com.rhz2026bandplaner"
         minSdk = 26
         targetSdk = 37
         versionCode = 1
