@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -228,20 +229,14 @@ val rockharz2026Bands = listOf(
 
 class MainActivity : ComponentActivity() {
 
-    // NEU: Ein Launcher, der den systemeigenen "Erlauben/Ablehnen"-Dialog aufruft
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        if (isGranted) {
-            // Berechtigung erteilt – Mitteilungen funktionieren ab jetzt!
-        }
-    }
+    ) { _ -> }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val sharedPreferences = getSharedPreferences("rockharz_prefs", MODE_PRIVATE)
 
-        // HIER GEÄNDERT: Startet die Abfrage sofort beim App-Start
         checkAndRequestNotificationPermission()
 
         setContent {
@@ -262,7 +257,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    // NEU: Hilfsfunktion zur Berechtigungsprüfung ab Android 13
     private fun checkAndRequestNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(
@@ -270,7 +264,6 @@ class MainActivity : ComponentActivity() {
                     Manifest.permission.POST_NOTIFICATIONS
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
-                // Werfe das Dialogfenster auf den Bildschirm
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
@@ -304,12 +297,33 @@ fun RockharzApp(
     var selectedTab by remember { mutableIntStateOf(0) }
     val tabs = listOf("Running Order", "Meine Favoriten")
 
+    // NEU: Status für die Anzeige des Info-Bildschirms (Dialog)
+    // Liest aus, ob es das erste Mal geöffnet wird. Wenn der Key "first_start_done" fehlt, ist es true.
+    var showInfoDialog by remember {
+        mutableStateOf(!sharedPreferences.getBoolean("first_start_done", false))
+    }
+
+    // Wenn der Info-Dialog aktiv ist, zeigen wir ihn hier an
+    if (showInfoDialog) {
+        InfoDialog(
+            onDismiss = {
+                showInfoDialog = false
+                // Speichert dauerhaft ab, dass der erste Start erledigt ist
+                sharedPreferences.edit { putBoolean("first_start_done", true) }
+            }
+        )
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(id = R.string.app_name), fontWeight = FontWeight.Bold) },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
                 actions = {
+                    // NEU: Info-Button direkt neben dem Theme-Schalter
+                    IconButton(onClick = { showInfoDialog = true }) {
+                        Text(text = "ℹ️", fontSize = 20.sp)
+                    }
                     IconButton(onClick = onToggleTheme) {
                         Text(text = if (isDarkMode) "☀️" else "🌙", fontSize = 20.sp)
                     }
@@ -358,6 +372,46 @@ fun RockharzApp(
             }
         }
     }
+}
+
+// ==========================================
+// NEU: DER INFO-BILDSCHIRM (DIALOG)
+// ==========================================
+@Composable
+fun InfoDialog(onDismiss: () -> Unit) {
+    val uriHandler = LocalUriHandler.current
+    val paypalUrl = "https://paypal.me/andreasvolkhausen"
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(text = "Willkommen!", fontWeight = FontWeight.Bold)
+        },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Text(
+                    text = "Danke das du die App Benutzt! Sie ist ein reines Hobby Projekt, kostenfrei und ohne Werbung. Die App steht in keiner Verbindung mit dem Rockharz oder den Veranstaltern. Falls Dir die App gefällt spendier mir gerne ein Bier.",
+                    fontSize = 15.sp,
+                    lineHeight = 22.sp
+                )
+                // ÄNDERUNG HIER: Schöner Text anstatt der nackten URL, Ziel bleibt identisch
+                Text(
+                    text = "🍻 Bier spendieren (PayPal)🍻",
+                    color = Color(0xFF2196F3),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .clickable { uriHandler.openUri(paypalUrl) }
+                        .padding(vertical = 4.dp)
+                )
+            }
+        },
+        confirmButton = {
+            Button(onClick = onDismiss) {
+                Text("Schließen")
+            }
+        }
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
