@@ -1,4 +1,4 @@
-package com.example.rhzplaner2026
+package com.rhz2026bandplaner
 
 import android.Manifest
 import android.app.AlarmManager
