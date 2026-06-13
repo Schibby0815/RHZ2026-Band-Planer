@@ -61,6 +61,7 @@ fun BandRow(
     val isLightTheme = MaterialTheme.colorScheme.background.luminance() > 0.5f
     val stageTextColor = if (isLightTheme) Color(0xFF1B5E20) else Color(0xFF81C784)
     val textColor = if (isLightTheme) Color.Black else Color.White
+    val uriHandler = LocalUriHandler.current
 
     Card(
         modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
@@ -75,6 +76,17 @@ fun BandRow(
                 Text(text = band.name, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = if (isLightTheme) Color.Black else Color.White)
                 Text(text = band.stage, fontSize = 12.sp, color = stageTextColor)
             }
+
+            Text(
+                text = "🎧",
+                fontSize = 20.sp,
+                modifier = Modifier
+                    .clickable {
+                        val url = "https://open.spotify.com/search/" + band.name.replace(" ", "%20")
+                        uriHandler.openUri(url)
+                    }
+                    .padding(horizontal = 12.dp, vertical = 8.dp)
+            )
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(text = band.formattedTime, fontWeight = FontWeight.Medium, color = textColor, modifier = Modifier.padding(end = 8.dp))

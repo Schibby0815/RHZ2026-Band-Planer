@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.core.content.edit
 import com.rhz2026bandplaner.data.FavoriteTimelineItem
 import com.rhz2026bandplaner.data.FestivalBand
@@ -30,7 +31,10 @@ fun RunningOrderScreen(
     onToggleFavorite: (String) -> Unit
 ) {
     val groupedBands = remember(bands) {
-        bands.groupBy { it.startTime.toLocalDate() }
+        bands.groupBy { band ->
+            // Festival-Tag Logik: Bands vor 5 Uhr morgens gehören zum Vortag
+            if (band.startTime.hour < 5) band.startTime.toLocalDate().minusDays(1) else band.startTime.toLocalDate()
+        }
             .mapValues { (_, bandsInDay) ->
                 bandsInDay.sortedBy { band ->
                     if (band.startTime.hour < 5) band.startTime.plusDays(1) else band.startTime
@@ -110,7 +114,10 @@ fun FavoritesScreen(
         }
     } else {
         val sortedDays = remember(favorites) {
-            favorites.groupBy { it.startTime.toLocalDate() }.keys.sorted()
+            favorites.groupBy { band ->
+                // Festival-Tag Logik: Bands vor 5 Uhr morgens gehören zum Vortag
+                if (band.startTime.hour < 5) band.startTime.toLocalDate().minusDays(1) else band.startTime.toLocalDate()
+            }.keys.sorted()
         }
 
         var collapsedFavoritesStr by remember {
@@ -123,6 +130,7 @@ fun FavoritesScreen(
         val primaryText = if (isLightTheme) Color.Black else Color.White
         val pauseBackground = if (isLightTheme) Color(0xFF1B5E20) else Color(0xFF141F14)
         val pauseText = Color.White
+        val uriHandler = LocalUriHandler.current
 
         LazyColumn(modifier = Modifier.fillMaxSize().padding(8.dp)) {
             sortedDays.forEach { localDate ->
@@ -163,7 +171,10 @@ fun FavoritesScreen(
                 }
 
                 if (!isCollapsed) {
-                    val bandsInDay = favorites.filter { it.startTime.toLocalDate() == localDate }
+                    val bandsInDay = favorites.filter { band ->
+                        val festivalDay = if (band.startTime.hour < 5) band.startTime.toLocalDate().minusDays(1) else band.startTime.toLocalDate()
+                        festivalDay == localDate
+                    }
                     val timelineForDay = buildFavoriteTimeline(bandsInDay)
 
                     items(timelineForDay) { item ->
@@ -184,6 +195,18 @@ fun FavoritesScreen(
                                             val stageTextColor = if (isLightTheme) Color(0xFF1B5E20) else Color(0xFF81C784)
                                             Text(text = item.band.stage, fontSize = 12.sp, color = stageTextColor)
                                         }
+
+                                        Text(
+                                            text = "🎧",
+                                            fontSize = 20.sp,
+                                            modifier = Modifier
+                                                .clickable {
+                                                    val url = "https://open.spotify.com/search/" + item.band.name.replace(" ", "%20")
+                                                    uriHandler.openUri(url)
+                                                }
+                                                .padding(horizontal = 12.dp, vertical = 8.dp)
+                                        )
+
                                         Text(text = item.band.formattedTime, fontWeight = FontWeight.Medium, color = primaryText)
                                     }
                                 }

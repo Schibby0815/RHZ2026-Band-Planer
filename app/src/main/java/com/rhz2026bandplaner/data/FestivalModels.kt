@@ -33,7 +33,7 @@ val rockharz2026Bands = listOf(
     FestivalBand("6", "Paradise Lost", "Rock Stage", LocalDateTime.of(2026, 7, 1, 19, 45), LocalDateTime.of(2026, 7, 1, 20, 45)),
     FestivalBand("7", "Black Label Society", "Dark Stage", LocalDateTime.of(2026, 7, 1, 20, 50), LocalDateTime.of(2026, 7, 1, 21, 55)),
     FestivalBand("8", "Helloween", "Rock Stage", LocalDateTime.of(2026, 7, 1, 22, 0), LocalDateTime.of(2026, 7, 2, 0, 0)),
-    FestivalBand("9", "Steve 'N' Seagulls", "Dark Stage", LocalDateTime.of(2026, 7, 1, 0, 10), LocalDateTime.of(2026, 7, 2, 1, 10)),
+    FestivalBand("9", "Steve 'N' Seagulls", "Dark Stage", LocalDateTime.of(2026, 7, 2, 0, 10), LocalDateTime.of(2026, 7, 2, 1, 10)),
 
     FestivalBand("10", "Final Cry", "Dark Stage", LocalDateTime.of(2026, 7, 2, 11, 50), LocalDateTime.of(2026, 7, 2, 12, 20)),
     FestivalBand("11", "Die Habenichtse", "Rock Stage", LocalDateTime.of(2026, 7, 2, 12, 25), LocalDateTime.of(2026, 7, 2, 13, 0)),
@@ -49,7 +49,7 @@ val rockharz2026Bands = listOf(
     FestivalBand("21", "Hämatom", "Rock Stage", LocalDateTime.of(2026, 7, 2, 20, 35), LocalDateTime.of(2026, 7, 2, 21, 35)),
     FestivalBand("22", "Avatar", "Dark Stage", LocalDateTime.of(2026, 7, 2, 21, 40), LocalDateTime.of(2026, 7, 2, 22, 40)),
     FestivalBand("23", "Alice Cooper", "Rock Stage", LocalDateTime.of(2026, 7, 2, 22, 45), LocalDateTime.of(2026, 7, 3, 0, 0)),
-    FestivalBand("24", "Dominum", "Dark Stage", LocalDateTime.of(2026, 7, 2, 0, 5), LocalDateTime.of(2026, 7, 3, 1, 0)),
+    FestivalBand("24", "Dominum", "Dark Stage", LocalDateTime.of(2026, 7, 3, 0, 5), LocalDateTime.of(2026, 7, 3, 1, 0)),
 
     FestivalBand("25", "Rodeo 5000", "Rock Stage", LocalDateTime.of(2026, 7, 3, 11, 20), LocalDateTime.of(2026, 7, 3, 11, 50)),
     FestivalBand("26", "Haggefugg", "Dark Stage", LocalDateTime.of(2026, 7, 3, 11, 55), LocalDateTime.of(2026, 7, 3, 12, 25)),
@@ -82,5 +82,5 @@ val rockharz2026Bands = listOf(
     FestivalBand("52", "Knorkator", "Rock Stage", LocalDateTime.of(2026, 7, 4, 20, 40), LocalDateTime.of(2026, 7, 4, 21, 40)),
     FestivalBand("53", "Emperor", "Dark Stage", LocalDateTime.of(2026, 7, 4, 21, 45), LocalDateTime.of(2026, 7, 4, 22, 45)),
     FestivalBand("54", "Feuerschwanz", "Rock Stage", LocalDateTime.of(2026, 7, 4, 22, 45), LocalDateTime.of(2026, 7, 5, 0, 15)),
-    FestivalBand("55", "Soen", "Dark Stage", LocalDateTime.of(2026, 7, 4, 0, 30), LocalDateTime.of(2026, 7, 5, 1, 30))
+    FestivalBand("55", "Soen", "Dark Stage", LocalDateTime.of(2026, 7, 5, 0, 30), LocalDateTime.of(2026, 7, 5, 1, 30))
 )

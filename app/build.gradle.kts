@@ -11,8 +11,8 @@ android {
         applicationId = "com.rhz2026bandplaner"
         minSdk = 26
         targetSdk = 37
-        versionCode = 2
-        versionName = "1.0.3"
+        versionCode = 5
+        versionName = "1.2.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

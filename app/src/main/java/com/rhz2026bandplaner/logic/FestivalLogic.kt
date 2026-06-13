@@ -5,7 +5,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import com.rhz2026bandplaner.MainActivity
 import com.rhz2026bandplaner.NotificationReceiver
 import com.rhz2026bandplaner.data.FavoriteTimelineItem
 import com.rhz2026bandplaner.data.FestivalBand
