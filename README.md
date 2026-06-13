@@ -1,6 +1,7 @@
+
 Rockharz 2026 - Band Planer
 
-<img width="300" height="300" alt="Gemini_Generated_Image_68ga8868ga8868ga" src="https://github.com/user-attachments/assets/41430003-61ae-4378-bb09-b7445c492bbc" />
+<img width="300" height="300" alt="Unbenannt_für_git" src="https://github.com/user-attachments/assets/f6886d3e-e20c-4c1c-b2c0-f067e5beea47" />
 
 Inoffizieller Planer für das Rockharz 2026. Running Order, Wecker und Favoriten.
 
@@ -16,7 +17,7 @@ Favoriten: Markiere Bands per Herz-Symbol als Favoriten.
 
 Pausen-Rechner: Automatische Anzeige von Freizeit-Pausen zwischen deinen Favoriten.
 
-Band-Wecker: Lokale Push-Benachrichtigung 5 Minuten vor dem Auftritt deiner Favoriten.
+Band-Wecker: Lokale Push-Benachrichtigung 5,10,15 oder 30 Minuten vor dem Auftritt deiner Favoriten.
 
 Design: Augenschonender Dunkelmodus für nachts & heller Natur-Grün-Look für die Sonne.
 
