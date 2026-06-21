@@ -5,6 +5,8 @@ Inoffizieller Planer für das Rockharz 2026. Running Order, Wecker und Favoriten
 
 <img width="300" height="300" alt="Unbenannt_für_git" src="https://github.com/user-attachments/assets/f6886d3e-e20c-4c1c-b2c0-f067e5beea47" />
 
+Kostenlos, werbefrei & Open-Source!
+
 Der Rockharz 2026 Band Planer ist ein inoffizielles, privates Fan-Projekt zur stressfreien Organisation deiner Konzertbesuche direkt auf dem Festivalgelände. Die App steht in keinerlei Verbindung zum Rockharz Festival oder den offiziellen Veranstaltern. Sie verzichtet auf unnötigen Ballast und läuft komplett offline.
 
 Berechtigungen: Die App benötigt beim ersten Start die Berechtigung für Mitteilungen, um dir Push-Nachrichten für den Band-Wecker zu senden. Die Berechtigung kann abgelehnt werden – die App läuft dann normal, nur ohne Benachrichtigungen.
