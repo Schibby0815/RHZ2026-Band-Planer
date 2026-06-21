@@ -1,5 +1,5 @@
 
-Rockharz 2026 - Band Planer
+# Rockharz 2026 - Band Planer
 
 Inoffizieller Planer für das Rockharz 2026. Running Order, Wecker und Favoriten
 
@@ -9,7 +9,7 @@ Der Rockharz 2026 Band Planer ist ein inoffizielles, privates Fan-Projekt zur st
 
 Berechtigungen: Die App benötigt beim ersten Start die Berechtigung für Mitteilungen, um dir Push-Nachrichten für den Band-Wecker zu senden. Die Berechtigung kann abgelehnt werden – die App läuft dann normal, nur ohne Benachrichtigungen.
 
-📋 DAS KANN DIE APP (FEATURES)
+## 📋 DAS KANN DIE APP (FEATURES)
 
 Running Order: Kompakte Übersicht von Mittwoch bis Samstag, komfortabel ein- und ausklappbar.
 
@@ -23,7 +23,9 @@ Design: Augenschonender Dunkelmodus für nachts & heller Natur-Grün-Look für d
 
 Reinhör-Feature: Tippe auf den Kopfhörer neben der Band um direkt zu einem bekannten Musik-Streaming Anbieter weitergeleitet zu werden. (Online-Verbindung erforderlich)
 
-⚠️ DAS KANN DIE APP NICHT
+
+
+## ⚠️ DAS KANN DIE APP NICHT
 
 Keine Live-Updates: Keine automatische Synchronisation bei kurzfristigen Zeitverschiebungen oder Programmänderungen vor Ort. 
 
