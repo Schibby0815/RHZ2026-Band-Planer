@@ -28,7 +28,7 @@ import java.util.*
 fun RunningOrderScreen(
     bands: List<FestivalBand>,
     sharedPreferences: SharedPreferences,
-    onToggleFavorite: (String) -> Unit
+    onToggleFavorite: (String) -> Unit,
 ) {
     val groupedBands = remember(bands) {
         bands.groupBy { band ->
@@ -46,7 +46,10 @@ fun RunningOrderScreen(
     var collapsedDaysStr by remember {
         mutableStateOf(sharedPreferences.getString("collapsed_days", "") ?: "")
     }
-    val collapsedDaysList = collapsedDaysStr.split(",").filter { it.isNotEmpty() }.toSet()
+    val collapsedDaysList = collapsedDaysStr.split(",")
+        .asSequence()
+        .filter { it.isNotEmpty() }
+        .toSet()
 
     LazyColumn(modifier = Modifier.fillMaxSize().padding(8.dp)) {
         groupedBands.forEach { (localDate, bandsInDay) ->
@@ -123,7 +126,10 @@ fun FavoritesScreen(
         var collapsedFavoritesStr by remember {
             mutableStateOf(sharedPreferences.getString("collapsed_favorites", "") ?: "")
         }
-        val collapsedFavoritesList = collapsedFavoritesStr.split(",").filter { it.isNotEmpty() }.toSet()
+        val collapsedFavoritesList = collapsedFavoritesStr.split(",")
+            .asSequence()
+            .filter { it.isNotEmpty() }
+            .toSet()
 
         val isLightTheme = MaterialTheme.colorScheme.background.luminance() > 0.5f
         val cardBackground = if (isLightTheme) Color.White else MaterialTheme.colorScheme.surfaceVariant

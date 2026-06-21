@@ -32,7 +32,7 @@ fun InfoDialog(onDismiss: () -> Unit) {
                 Text(
                     text = "Danke das du die App Benutzt! Sie ist ein reines Hobby Projekt, kostenfrei und ohne Werbung. Die App steht in keiner Verbindung mit dem Rockharz oder den Veranstaltern. Falls Dir die App gefällt spendier mir gerne ein Bier.",
                     fontSize = 15.sp,
-                    lineHeight = 22.sp
+                    lineHeight = 22.sp,
                 )
                 Text(
                     text = "🍻 Bier spendieren (PayPal)🍻",

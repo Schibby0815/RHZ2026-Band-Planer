@@ -11,17 +11,20 @@ android {
         applicationId = "com.rhz2026bandplaner"
         minSdk = 26
         targetSdk = 37
-        versionCode = 5
-        versionName = "1.2.1"
+        versionCode = 6
+        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            optimization {
-                enable = false
-            }
+            isMinifyEnabled = true      // Entfernt ungenutzten Code (Shrinking)
+            isShrinkResources = true   // Entfernt ungenutzte Ressourcen (Bilder/Layouts)
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {

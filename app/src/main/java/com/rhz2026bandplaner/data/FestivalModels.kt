@@ -9,7 +9,7 @@ data class FestivalBand(
     val stage: String,
     val startTime: LocalDateTime,
     val endTime: LocalDateTime,
-    val isFavorite: Boolean = false
+    val isFavorite: Boolean = false,
 ) {
     val formattedTime: String
         get() = "${startTime.format(DateTimeFormatter.ofPattern("HH:mm"))} - ${endTime.format(DateTimeFormatter.ofPattern("HH:mm"))}"
@@ -21,10 +21,6 @@ sealed class FavoriteTimelineItem {
 }
 
 val rockharz2026Bands = listOf(
-    FestivalBand("991", "\uD83D\uDEA7 TEST 5 MIN (Start in 6m) \uD83D\uDEA7", "Rock Stage", LocalDateTime.now().plusMinutes(6), LocalDateTime.now().plusMinutes(45)),
-    FestivalBand("992", "\uD83D\uDEA7 TEST 10 MIN (Start in 11m) \uD83D\uDEA7", "Dark Stage", LocalDateTime.now().plusMinutes(11), LocalDateTime.now().plusMinutes(50)),
-    FestivalBand("993", "\uD83D\uDEA7 TEST 15 MIN (Start in 16m) \uD83D\uDEA7", "Main Stage", LocalDateTime.now().plusMinutes(16), LocalDateTime.now().plusMinutes(55)),
-    FestivalBand("994", "\uD83D\uDEA7 TEST 30 MIN (Start in 31m) \uD83D\uDEA7", "Rock Stage", LocalDateTime.now().plusMinutes(31), LocalDateTime.now().plusMinutes(70)),
     FestivalBand("1", "Heavysaurus", "Dark Stage", LocalDateTime.of(2026, 7, 1, 15, 30), LocalDateTime.of(2026, 7, 1, 16, 15)),
     FestivalBand("2", "Soulbound", "Rock Stage", LocalDateTime.of(2026, 7, 1, 16, 20), LocalDateTime.of(2026, 7, 1, 17, 5)),
     FestivalBand("3", "Harakiri For The Sky", "Dark Stage", LocalDateTime.of(2026, 7, 1, 17, 10), LocalDateTime.of(2026, 7, 1, 17, 55)),
@@ -41,7 +37,7 @@ val rockharz2026Bands = listOf(
     FestivalBand("13", "Hagane", "Rock Stage", LocalDateTime.of(2026, 7, 2, 13, 50), LocalDateTime.of(2026, 7, 2, 14, 25)),
     FestivalBand("14", "Stahlmann", "Dark Stage", LocalDateTime.of(2026, 7, 2, 14, 30), LocalDateTime.of(2026, 7, 2, 15, 10)),
     FestivalBand("15", "Sagenbringer", "Rock Stage", LocalDateTime.of(2026, 7, 2, 15, 15), LocalDateTime.of(2026, 7, 2, 16, 0)),
-    FestivalBand("16", "Dogma", "Dark Stage", LocalDateTime.of(2026, 7, 2, 16, 0), LocalDateTime.of(2026, 7, 2, 16, 50)),
+    FestivalBand("16", "Dogma", "Dark Stage", LocalDateTime.of(2026, 7, 2, 16, 5), LocalDateTime.of(2026, 7, 2, 16, 50)),
     FestivalBand("17", "Warmen", "Rock Stage", LocalDateTime.of(2026, 7, 2, 16, 55), LocalDateTime.of(2026, 7, 2, 17, 45)),
     FestivalBand("18", "Decapitated", "Dark Stage", LocalDateTime.of(2026, 7, 2, 17, 50), LocalDateTime.of(2026, 7, 2, 18, 40)),
     FestivalBand("19", "Betontod", "Rock Stage", LocalDateTime.of(2026, 7, 2, 18, 45), LocalDateTime.of(2026, 7, 2, 19, 35)),
@@ -66,6 +62,7 @@ val rockharz2026Bands = listOf(
     FestivalBand("37", "Subway To Sally", "Rock Stage", LocalDateTime.of(2026, 7, 3, 20, 40), LocalDateTime.of(2026, 7, 3, 21, 40)),
     FestivalBand("38", "Airbourne", "Dark Stage", LocalDateTime.of(2026, 7, 3, 21, 45), LocalDateTime.of(2026, 7, 3, 22, 45)),
     FestivalBand("39", "Kreator", "Rock Stage", LocalDateTime.of(2026, 7, 3, 22, 50), LocalDateTime.of(2026, 7, 4, 0, 20)),
+    FestivalBand("56", "Saint City Orchestra", "Dark Stage", LocalDateTime.of(2026, 7, 4, 0, 30), LocalDateTime.of(2026, 7, 4, 1, 30)),
 
     FestivalBand("40", "Pinhead", "Rock Stage", LocalDateTime.of(2026, 7, 4, 11, 20), LocalDateTime.of(2026, 7, 4, 11, 50)),
     FestivalBand("41", "Drone", "Dark Stage", LocalDateTime.of(2026, 7, 4, 11, 55), LocalDateTime.of(2026, 7, 4, 12, 25)),
