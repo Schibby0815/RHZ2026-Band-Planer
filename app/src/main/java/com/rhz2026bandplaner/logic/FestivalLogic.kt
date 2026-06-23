@@ -38,8 +38,8 @@ fun buildFavoriteTimeline(bandsInDay: List<FestivalBand>): List<FavoriteTimeline
                 FavoriteTimelineItem.FreeTimeItem(
                     durationInMinutes = totalMinutes,
                     from = previousBand.formattedTime.substringAfter("- ").trim(),
-                    to = currentBand.formattedTime.substringBefore(" -").trim()
-                )
+                    to = currentBand.formattedTime.substringBefore(" -").trim(),
+                ),
             )
         }
         timeline.add(FavoriteTimelineItem.BandItem(currentBand))
@@ -60,7 +60,7 @@ fun scheduleNotification(context: Context, band: FestivalBand, minutesBefore: In
         context,
         band.id.hashCode(),
         intent,
-        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
     )
 
     val triggerTime = band.startTime
@@ -74,7 +74,7 @@ fun scheduleNotification(context: Context, band: FestivalBand, minutesBefore: In
                 if (alarmManager.canScheduleExactAlarms()) {
                     alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
                 } else {
-                    alarmManager.set(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
+                    alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
                 }
             } else {
                 alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
@@ -92,7 +92,7 @@ fun cancelNotification(context: Context, band: FestivalBand) {
         context,
         band.id.hashCode(),
         intent,
-        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
     )
     if (pendingIntent != null) {
         alarmManager.cancel(pendingIntent)

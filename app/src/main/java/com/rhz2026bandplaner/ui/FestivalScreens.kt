@@ -73,7 +73,7 @@ fun RunningOrderScreen(
                             collapsedDaysStr = newSet.joinToString(",")
                             sharedPreferences.edit { putString("collapsed_days", collapsedDaysStr) }
                         }
-                        .padding(12.dp)
+                        .padding(12.dp),
                 ) {
                     val formatter = java.time.format.DateTimeFormatter.ofPattern("EEEE, dd. MMMM", Locale.GERMAN)
                     val displayDate = localDate.format(formatter)
@@ -81,7 +81,7 @@ fun RunningOrderScreen(
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(text = displayDate, fontWeight = FontWeight.Bold, color = headerTextColor)
                         Text(text = if (isCollapsed) "▶" else "▼", color = headerTextColor, fontWeight = FontWeight.Bold)
@@ -102,7 +102,7 @@ fun RunningOrderScreen(
 @Composable
 fun FavoritesScreen(
     bands: List<FestivalBand>,
-    sharedPreferences: SharedPreferences
+    sharedPreferences: SharedPreferences,
 ) {
     val favorites = bands.filter { it.isFavorite }
 
@@ -112,7 +112,7 @@ fun FavoritesScreen(
                 text = "Noch keine Favoriten markiert.\nTippe auf das Herz bei deinen Bands!",
                 color = Color.Gray,
                 fontSize = 16.sp,
-                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
             )
         }
     } else {
@@ -160,7 +160,7 @@ fun FavoritesScreen(
                                 collapsedFavoritesStr = newSet.joinToString(",")
                                 sharedPreferences.edit { putString("collapsed_favorites", collapsedFavoritesStr) }
                             }
-                            .padding(12.dp)
+                            .padding(12.dp),
                     ) {
                         val formatter = java.time.format.DateTimeFormatter.ofPattern("EEEE, dd. MMMM", Locale.GERMAN)
                         val displayDate = localDate.format(formatter)
@@ -168,7 +168,7 @@ fun FavoritesScreen(
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Text(text = displayDate, fontWeight = FontWeight.Bold, color = headerTextColor)
                             Text(text = if (isCollapsed) "▶" else "▼", color = headerTextColor, fontWeight = FontWeight.Bold)
@@ -189,7 +189,7 @@ fun FavoritesScreen(
                                 Card(
                                     modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp, horizontal = 4.dp),
                                     colors = CardDefaults.cardColors(containerColor = cardBackground),
-                                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
                                 ) {
                                     Row(
                                         modifier = Modifier.padding(16.dp),

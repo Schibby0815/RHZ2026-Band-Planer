@@ -41,7 +41,7 @@ fun InfoDialog(onDismiss: () -> Unit) {
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
                         .clickable { uriHandler.openUri(paypalUrl) }
-                        .padding(vertical = 4.dp)
+                        .padding(vertical = 4.dp),
                 )
             }
         },
@@ -89,12 +89,17 @@ fun BandRow(
             )
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(text = band.formattedTime, fontWeight = FontWeight.Medium, color = textColor, modifier = Modifier.padding(end = 8.dp))
+                Text(
+                    text = band.formattedTime,
+                    fontWeight = FontWeight.Medium,
+                    color = textColor,
+                    modifier = Modifier.padding(end = 8.dp),
+                )
                 IconButton(onClick = { onToggleFavorite(band.id) }) {
                     Icon(
                         imageVector = if (band.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                         contentDescription = "Favorit",
-                        tint = if (band.isFavorite) MaterialTheme.colorScheme.primary else Color.Gray
+                        tint = if (band.isFavorite) MaterialTheme.colorScheme.primary else Color.Gray,
                     )
                 }
             }

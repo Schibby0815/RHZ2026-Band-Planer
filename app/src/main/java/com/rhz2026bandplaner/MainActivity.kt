@@ -85,12 +85,11 @@ class MainActivity : ComponentActivity() {
                         sharedPreferences.edit(commit = true) { putBoolean("is_dark_mode", isDarkMode) }
                     },
                     hasPermission = { notificationPermissionGranted },
-                    onRequestPermission = {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-                        }
+                ) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                     }
-                )
+                }
             }
         }
     }
@@ -99,7 +98,7 @@ class MainActivity : ComponentActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             val hasPermission = ContextCompat.checkSelfPermission(
                 this,
-                Manifest.permission.POST_NOTIFICATIONS
+                Manifest.permission.POST_NOTIFICATIONS,
             ) == PackageManager.PERMISSION_GRANTED
 
             val alreadyAskedBefore = sharedPreferences.getBoolean("notification_asked_once", false)
@@ -121,18 +120,17 @@ fun RockharzApp(
     isDarkMode: Boolean,
     onToggleTheme: () -> Unit,
     hasPermission: () -> Boolean,
-    onRequestPermission: () -> Unit
+    onRequestPermission: () -> Unit,
 ) {
     val context = androidx.compose.ui.platform.LocalContext.current
-    val toastContext = androidx.compose.ui.platform.LocalContext.current
     val coroutineScope = rememberCoroutineScope()
 
     var reminderMinutes by remember {
         mutableIntStateOf(
-            if (!hasPermission()) -1 else sharedPreferences.getInt("reminder_minutes", 5)
+            if (!hasPermission()) -1 else sharedPreferences.getInt("reminder_minutes", 5),
         )
     }
-    var showTimeMenu by remember { mutableStateOf(false) }
+    var showTimeMenu by remember { mutableStateOf(value = false) }
 
     var bandsState by remember {
         mutableStateOf(
@@ -141,7 +139,7 @@ fun RockharzApp(
                 rockharz2026Bands.map { band ->
                     if (savedFavoriteIds.contains(band.id)) band.copy(isFavorite = true) else band
                 }
-            }
+            },
         )
     }
 
@@ -161,9 +159,9 @@ fun RockharzApp(
     val handleTimeSelection: (Int) -> Unit = { minutes ->
         if (!hasPermission()) {
             android.widget.Toast.makeText(
-                toastContext,
+                context,
                 "Bitte erlaube Benachrichtigungen, damit der Wecker gestellt werden kann!",
-                android.widget.Toast.LENGTH_LONG
+                android.widget.Toast.LENGTH_LONG,
             ).show()
             onRequestPermission()
         } else {
@@ -175,17 +173,17 @@ fun RockharzApp(
     }
 
     val tabs = listOf("Running Order", "Meine Favoriten")
-    val pagerState = rememberPagerState(pageCount = { tabs.size })
+    val pagerState = rememberPagerState { tabs.size }
 
     var showInfoDialog by remember {
         mutableStateOf(!sharedPreferences.getBoolean("first_start_done", false))
     }
 
     if (showInfoDialog) {
-        InfoDialog(onDismiss = {
+        InfoDialog {
             showInfoDialog = false
             sharedPreferences.edit { putBoolean("first_start_done", true) }
-        })
+        }
     }
 
     Scaffold(
@@ -200,7 +198,7 @@ fun RockharzApp(
                         }
                         DropdownMenu(
                             expanded = showTimeMenu,
-                            onDismissRequest = { showTimeMenu = false }
+                            onDismissRequest = { showTimeMenu = false },
                         ) {
                             DropdownMenuItem(
                                 text = { Text("Wecker deaktivieren ❌ ${if(reminderMinutes == -1) "✓" else ""}") },
@@ -249,32 +247,31 @@ fun RockharzApp(
                     0 -> RunningOrderScreen(
                         bands = bandsState,
                         sharedPreferences = sharedPreferences,
-                        onToggleFavorite = { bandId ->
-                            val updatedBands = bandsState.map { band ->
-                                if (band.id == bandId) {
-                                    val newFavoriteState = !band.isFavorite
-                                    if (newFavoriteState) {
-                                        if (reminderMinutes != -1) scheduleNotification(context, band, reminderMinutes)
-                                    } else {
-                                        cancelNotification(context, band)
-                                    }
-                                    band.copy(isFavorite = newFavoriteState)
+                    ) { bandId ->
+                        val updatedBands = bandsState.map { band ->
+                            if (band.id == bandId) {
+                                val newFavoriteState = !band.isFavorite
+                                if (newFavoriteState) {
+                                    if (reminderMinutes != -1) scheduleNotification(context, band, reminderMinutes)
                                 } else {
-                                    band
+                                    cancelNotification(context, band)
                                 }
-                            }
-                            bandsState = updatedBands
-                            val favoriteIds = updatedBands.asSequence()
-                                .filter { it.isFavorite }
-                                .map { it.id }
-                                .toSet()
-                            
-                            // 1. Zuerst SharedPreferences synchron mit commit() schreiben
-                            sharedPreferences.edit(commit = true) {
-                                putStringSet("favorite_bands", favoriteIds)
+                                band.copy(isFavorite = newFavoriteState)
+                            } else {
+                                band
                             }
                         }
-                    )
+                        bandsState = updatedBands
+                        val favoriteIds = updatedBands.asSequence()
+                            .filter { it.isFavorite }
+                            .map { it.id }
+                            .toSet()
+
+                        // 1. Zuerst SharedPreferences synchron mit commit() schreiben
+                        sharedPreferences.edit(commit = true) {
+                            putStringSet("favorite_bands", favoriteIds)
+                        }
+                    }
 
                     1 -> FavoritesScreen(
                         bands = bandsState,
