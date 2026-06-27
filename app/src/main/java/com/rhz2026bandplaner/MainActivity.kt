@@ -131,6 +131,9 @@ fun RockharzApp(
         )
     }
     var showTimeMenu by remember { mutableStateOf(value = false) }
+    var showSignings by remember {
+        mutableStateOf(sharedPreferences.getBoolean("show_signings", true))
+    }
 
     var bandsState by remember {
         mutableStateOf(
@@ -218,12 +221,27 @@ fun RockharzApp(
                             }
                         }
                     }
+                    IconButton(onClick = {
+                        showSignings = !showSignings
+                        sharedPreferences.edit { putBoolean("show_signings", showSignings) }
+                    }) {
+                        Text(
+                            text = if (showSignings) "✍️" else "🚫✍️",
+                            fontSize = 20.sp,
+                            maxLines = 1,
+                            softWrap = false
+                        )
+                    }
                     IconButton(onClick = { showInfoDialog = true }) { Text(text = "ℹ️", fontSize = 20.sp) }
                     IconButton(onClick = onToggleTheme) { Text(text = if (isDarkMode) "☀️" else "🌙", fontSize = 20.sp) }
                 }
             )
         }
     ) { paddingValues ->
+        val filteredBands = remember(bandsState, showSignings) {
+            if (showSignings) bandsState else bandsState.filter { it.type == com.rhz2026bandplaner.data.EventType.BAND }
+        }
+
         Column(modifier = Modifier.padding(paddingValues)) {
             PrimaryTabRow(selectedTabIndex = pagerState.currentPage) {
                 tabs.forEachIndexed { index, title ->
@@ -245,16 +263,20 @@ fun RockharzApp(
             ) { page ->
                 when (page) {
                     0 -> RunningOrderScreen(
-                        bands = bandsState,
+                        bands = filteredBands,
                         sharedPreferences = sharedPreferences,
                     ) { bandId ->
                         val updatedBands = bandsState.map { band ->
                             if (band.id == bandId) {
                                 val newFavoriteState = !band.isFavorite
-                                if (newFavoriteState) {
-                                    if (reminderMinutes != -1) scheduleNotification(context, band, reminderMinutes)
-                                } else {
-                                    cancelNotification(context, band)
+                                try {
+                                    if (newFavoriteState) {
+                                        if (reminderMinutes != -1) scheduleNotification(context, band, reminderMinutes)
+                                    } else {
+                                        cancelNotification(context, band)
+                                    }
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
                                 }
                                 band.copy(isFavorite = newFavoriteState)
                             } else {
@@ -274,7 +296,7 @@ fun RockharzApp(
                     }
 
                     1 -> FavoritesScreen(
-                        bands = bandsState,
+                        bands = filteredBands,
                         sharedPreferences = sharedPreferences
                     )
                 }

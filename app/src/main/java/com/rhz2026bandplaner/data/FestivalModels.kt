@@ -3,6 +3,8 @@ package com.rhz2026bandplaner.data
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+enum class EventType { BAND, SIGNING }
+
 data class FestivalBand(
     val id: String,
     val name: String,
@@ -10,6 +12,7 @@ data class FestivalBand(
     val startTime: LocalDateTime,
     val endTime: LocalDateTime,
     val isFavorite: Boolean = false,
+    val type: EventType = EventType.BAND,
 ) {
     val formattedTime: String
         get() = "${startTime.format(DateTimeFormatter.ofPattern("HH:mm"))} - ${endTime.format(DateTimeFormatter.ofPattern("HH:mm"))}"
@@ -18,6 +21,7 @@ data class FestivalBand(
 sealed class FavoriteTimelineItem {
     data class BandItem(val band: FestivalBand) : FavoriteTimelineItem()
     data class FreeTimeItem(val durationInMinutes: Long, val from: String, val to: String) : FavoriteTimelineItem()
+    data class ConflictItem(val bands: List<FestivalBand>, val signings: List<FestivalBand>) : FavoriteTimelineItem()
 }
 
 val rockharz2026Bands = listOf(
@@ -79,5 +83,53 @@ val rockharz2026Bands = listOf(
     FestivalBand("52", "Knorkator", "Rock Stage", LocalDateTime.of(2026, 7, 4, 20, 40), LocalDateTime.of(2026, 7, 4, 21, 40)),
     FestivalBand("53", "Emperor", "Dark Stage", LocalDateTime.of(2026, 7, 4, 21, 45), LocalDateTime.of(2026, 7, 4, 22, 45)),
     FestivalBand("54", "Feuerschwanz", "Rock Stage", LocalDateTime.of(2026, 7, 4, 22, 45), LocalDateTime.of(2026, 7, 5, 0, 15)),
-    FestivalBand("55", "Soen", "Dark Stage", LocalDateTime.of(2026, 7, 5, 0, 30), LocalDateTime.of(2026, 7, 5, 1, 30))
+    FestivalBand("55", "Soen", "Dark Stage", LocalDateTime.of(2026, 7, 5, 0, 30), LocalDateTime.of(2026, 7, 5, 1, 30)),
+
+    // Autogrammstunden (Signing Sessions) - Wednesday
+    FestivalBand("sig_1", "Grabenschlampen (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 1, 15, 30), LocalDateTime.of(2026, 7, 1, 16, 0), type = EventType.SIGNING),
+    FestivalBand("sig_2", "Heavysaurus (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 1, 17, 0), LocalDateTime.of(2026, 7, 1, 17, 30), type = EventType.SIGNING),
+    FestivalBand("sig_3", "Soulbound (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 1, 18, 0), LocalDateTime.of(2026, 7, 1, 18, 30), type = EventType.SIGNING),
+    FestivalBand("sig_4", "The Haunted (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 1, 21, 20), LocalDateTime.of(2026, 7, 1, 21, 50), type = EventType.SIGNING),
+    FestivalBand("sig_5", "Steve 'N' Seagulls (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 1, 22, 0), LocalDateTime.of(2026, 7, 1, 22, 30), type = EventType.SIGNING),
+
+    // Thursday
+    FestivalBand("sig_6", "Final Cry (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 2, 13, 0), LocalDateTime.of(2026, 7, 2, 13, 30), type = EventType.SIGNING),
+    FestivalBand("sig_7", "Ernie Fleetenkieker (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 2, 13, 30), LocalDateTime.of(2026, 7, 2, 14, 0), type = EventType.SIGNING),
+    FestivalBand("sig_8", "Die Habenichtse (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 2, 14, 0), LocalDateTime.of(2026, 7, 2, 14, 30), type = EventType.SIGNING),
+    FestivalBand("sig_9", "Betontod (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 2, 14, 30), LocalDateTime.of(2026, 7, 2, 15, 0), type = EventType.SIGNING),
+    FestivalBand("sig_10", "Warmen (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 2, 15, 0), LocalDateTime.of(2026, 7, 2, 15, 30), type = EventType.SIGNING),
+    FestivalBand("sig_11", "Agnostic Front (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 2, 15, 30), LocalDateTime.of(2026, 7, 2, 16, 0), type = EventType.SIGNING),
+    FestivalBand("sig_12", "Hagane (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 2, 16, 0), LocalDateTime.of(2026, 7, 2, 16, 30), type = EventType.SIGNING),
+    FestivalBand("sig_13", "Sagenbringer (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 2, 16, 30), LocalDateTime.of(2026, 7, 2, 17, 0), type = EventType.SIGNING),
+    FestivalBand("sig_14", "Mittel Alta (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 2, 17, 0), LocalDateTime.of(2026, 7, 2, 17, 30), type = EventType.SIGNING),
+    FestivalBand("sig_15", "Stahlmann (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 2, 17, 30), LocalDateTime.of(2026, 7, 2, 18, 0), type = EventType.SIGNING),
+    FestivalBand("sig_16", "Hämatom (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 2, 18, 0), LocalDateTime.of(2026, 7, 2, 18, 30), type = EventType.SIGNING),
+    FestivalBand("sig_17", "Dominum (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 2, 20, 0), LocalDateTime.of(2026, 7, 2, 20, 30), type = EventType.SIGNING),
+
+    // Friday
+    FestivalBand("sig_18", "Cypecore (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 3, 11, 30), LocalDateTime.of(2026, 7, 3, 12, 0), type = EventType.SIGNING),
+    FestivalBand("sig_19", "Gothminister (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 3, 12, 15), LocalDateTime.of(2026, 7, 3, 12, 45), type = EventType.SIGNING),
+    FestivalBand("sig_20", "Rodeo 5000 (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 3, 13, 0), LocalDateTime.of(2026, 7, 3, 13, 30), type = EventType.SIGNING),
+    FestivalBand("sig_21", "Motorjesus (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 3, 13, 40), LocalDateTime.of(2026, 7, 3, 14, 10), type = EventType.SIGNING),
+    FestivalBand("sig_22", "Fiddler's Green (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 3, 14, 20), LocalDateTime.of(2026, 7, 3, 14, 50), type = EventType.SIGNING),
+    FestivalBand("sig_23", "Hiraes (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 3, 15, 0), LocalDateTime.of(2026, 7, 3, 15, 30), type = EventType.SIGNING),
+    FestivalBand("sig_24", "Haggefugg (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 3, 15, 35), LocalDateTime.of(2026, 7, 3, 16, 5), type = EventType.SIGNING),
+    FestivalBand("sig_25", "P.O.D. (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 3, 16, 10), LocalDateTime.of(2026, 7, 3, 16, 40), type = EventType.SIGNING),
+    FestivalBand("sig_26", "Rauhbein (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 3, 17, 0), LocalDateTime.of(2026, 7, 3, 17, 30), type = EventType.SIGNING),
+    FestivalBand("sig_27", "Subway To Sally (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 3, 17, 40), LocalDateTime.of(2026, 7, 3, 18, 10), type = EventType.SIGNING),
+    FestivalBand("sig_28", "Walls Of Jericho (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 3, 19, 20), LocalDateTime.of(2026, 7, 3, 19, 50), type = EventType.SIGNING),
+    FestivalBand("sig_29", "Die Apokalyptischen Reiter (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 3, 20, 15), LocalDateTime.of(2026, 7, 3, 20, 45), type = EventType.SIGNING),
+
+    // Saturday
+    FestivalBand("sig_30", "Tungsten (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 4, 12, 0), LocalDateTime.of(2026, 7, 4, 12, 30), type = EventType.SIGNING),
+    FestivalBand("sig_31", "Pinhead (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 4, 12, 30), LocalDateTime.of(2026, 7, 4, 13, 0), type = EventType.SIGNING),
+    FestivalBand("sig_32", "Annisokay (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 4, 13, 10), LocalDateTime.of(2026, 7, 4, 13, 40), type = EventType.SIGNING),
+    FestivalBand("sig_33", "Artillery (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 4, 13, 45), LocalDateTime.of(2026, 7, 4, 14, 15), type = EventType.SIGNING),
+    FestivalBand("sig_34", "Necrotted (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 4, 15, 0), LocalDateTime.of(2026, 7, 4, 15, 30), type = EventType.SIGNING),
+    FestivalBand("sig_35", "Crypta (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 4, 16, 25), LocalDateTime.of(2026, 7, 4, 16, 55), type = EventType.SIGNING),
+    FestivalBand("sig_36", "Knorkator (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 4, 18, 0), LocalDateTime.of(2026, 7, 4, 18, 30), type = EventType.SIGNING),
+    FestivalBand("sig_37", "Feuerschwanz (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 4, 18, 50), LocalDateTime.of(2026, 7, 4, 19, 20), type = EventType.SIGNING),
+    FestivalBand("sig_38", "Drone (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 4, 20, 0), LocalDateTime.of(2026, 7, 4, 20, 30), type = EventType.SIGNING),
+    FestivalBand("sig_39", "Finntroll (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 4, 20, 30), LocalDateTime.of(2026, 7, 4, 21, 0), type = EventType.SIGNING),
+    FestivalBand("sig_40", "Danko Jones (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 4, 21, 0), LocalDateTime.of(2026, 7, 4, 21, 30), type = EventType.SIGNING)
 )

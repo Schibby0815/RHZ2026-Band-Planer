@@ -16,12 +16,13 @@ import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.core.content.edit
 import com.rhz2026bandplaner.data.FavoriteTimelineItem
 import com.rhz2026bandplaner.data.FestivalBand
 import com.rhz2026bandplaner.logic.buildFavoriteTimeline
 import java.util.*
+import java.time.Duration
+import java.time.LocalDateTime
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -32,7 +33,6 @@ fun RunningOrderScreen(
 ) {
     val groupedBands = remember(bands) {
         bands.groupBy { band ->
-            // Festival-Tag Logik: Bands vor 5 Uhr morgens gehören zum Vortag
             if (band.startTime.hour < 5) band.startTime.toLocalDate().minusDays(1) else band.startTime.toLocalDate()
         }
             .mapValues { (_, bandsInDay) ->
@@ -50,6 +50,15 @@ fun RunningOrderScreen(
         .asSequence()
         .filter { it.isNotEmpty() }
         .toSet()
+
+    // State für den Detail-Dialog
+    var selectedBandForDetail by remember { mutableStateOf<FestivalBand?>(null) }
+
+    if (selectedBandForDetail != null) {
+        BandDetailDialog(band = selectedBandForDetail!!) {
+            selectedBandForDetail = null
+        }
+    }
 
     LazyColumn(modifier = Modifier.fillMaxSize().padding(8.dp)) {
         groupedBands.forEach { (localDate, bandsInDay) ->
@@ -91,7 +100,11 @@ fun RunningOrderScreen(
 
             if (!isCollapsed) {
                 items(bandsInDay) { band ->
-                    BandRow(band = band, onToggleFavorite = onToggleFavorite)
+                    BandRow(
+                        band = band, 
+                        onToggleFavorite = onToggleFavorite,
+                        onCardClick = { selectedBandForDetail = band }
+                    )
                 }
             }
         }
@@ -106,6 +119,15 @@ fun FavoritesScreen(
 ) {
     val favorites = bands.filter { it.isFavorite }
 
+    // State für den Detail-Dialog
+    var selectedBandForDetail by remember { mutableStateOf<FestivalBand?>(null) }
+
+    if (selectedBandForDetail != null) {
+        BandDetailDialog(band = selectedBandForDetail!!) {
+            selectedBandForDetail = null
+        }
+    }
+
     if (favorites.isEmpty()) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Text(
@@ -118,7 +140,6 @@ fun FavoritesScreen(
     } else {
         val sortedDays = remember(favorites) {
             favorites.groupBy { band ->
-                // Festival-Tag Logik: Bands vor 5 Uhr morgens gehören zum Vortag
                 if (band.startTime.hour < 5) band.startTime.toLocalDate().minusDays(1) else band.startTime.toLocalDate()
             }.keys.sorted()
         }
@@ -132,11 +153,8 @@ fun FavoritesScreen(
             .toSet()
 
         val isLightTheme = MaterialTheme.colorScheme.background.luminance() > 0.5f
-        val cardBackground = if (isLightTheme) Color.White else MaterialTheme.colorScheme.surfaceVariant
-        val primaryText = if (isLightTheme) Color.Black else Color.White
         val pauseBackground = if (isLightTheme) Color(0xFF1B5E20) else Color(0xFF141F14)
         val pauseText = Color.White
-        val uriHandler = LocalUriHandler.current
 
         LazyColumn(modifier = Modifier.fillMaxSize().padding(8.dp)) {
             sortedDays.forEach { localDate ->
@@ -152,10 +170,11 @@ fun FavoritesScreen(
                             .fillMaxWidth()
                             .background(headerBgColor)
                             .clickable {
+                                val currentSet = collapsedFavoritesList
                                 val newSet = if (isCollapsed) {
-                                    collapsedFavoritesList - dateKey
+                                    currentSet - dateKey
                                 } else {
-                                    collapsedFavoritesList + dateKey
+                                    currentSet + dateKey
                                 }
                                 collapsedFavoritesStr = newSet.joinToString(",")
                                 sharedPreferences.edit { putString("collapsed_favorites", collapsedFavoritesStr) }
@@ -186,35 +205,44 @@ fun FavoritesScreen(
                     items(timelineForDay) { item ->
                         when (item) {
                             is FavoriteTimelineItem.BandItem -> {
-                                Card(
-                                    modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp, horizontal = 4.dp),
-                                    colors = CardDefaults.cardColors(containerColor = cardBackground),
-                                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                                CompactBandCard(
+                                    band = item.band, 
+                                    modifier = Modifier.fillMaxWidth(), 
+                                    isConflict = false,
+                                    onClick = { selectedBandForDetail = item.band }
+                                )
+                            }
+                            is FavoriteTimelineItem.ConflictItem -> {
+                                val blockStart = item.bands.minOf { it.startTime }.let { bStart ->
+                                    val sStart = item.signings.minOf { it.startTime }
+                                    if (bStart.isBefore(sStart)) bStart else sStart
+                                }
+                                val blockEnd = item.bands.maxOf { it.endTime }.let { bEnd ->
+                                    val sEnd = item.signings.maxOf { it.endTime }
+                                    if (bEnd.isAfter(sEnd)) bEnd else sEnd
+                                }
+                                
+                                val totalDuration = Duration.between(blockStart, blockEnd).toMinutes()
+                                val blockHeight = (totalDuration * 3).toInt().dp
+
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(blockHeight)
+                                        .padding(vertical = 4.dp)
                                 ) {
-                                    Row(
-                                        modifier = Modifier.padding(16.dp),
-                                        horizontalArrangement = Arrangement.SpaceBetween,
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        Column(modifier = Modifier.weight(1f)) {
-                                            Text(text = item.band.name, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = primaryText)
-                                            val stageTextColor = if (isLightTheme) Color(0xFF1B5E20) else Color(0xFF81C784)
-                                            Text(text = item.band.stage, fontSize = 12.sp, color = stageTextColor)
-                                        }
-
-                                        Text(
-                                            text = "🎧",
-                                            fontSize = 20.sp,
-                                            modifier = Modifier
-                                                .clickable {
-                                                    val url = "https://open.spotify.com/search/" + item.band.name.replace(" ", "%20")
-                                                    uriHandler.openUri(url)
-                                                }
-                                                .padding(horizontal = 12.dp, vertical = 8.dp)
-                                        )
-
-                                        Text(text = item.band.formattedTime, fontWeight = FontWeight.Medium, color = primaryText)
-                                    }
+                                    TimelineColumn(
+                                        items = item.bands, 
+                                        blockStart = blockStart, 
+                                        modifier = Modifier.weight(1f).fillMaxHeight(),
+                                        onBandClick = { selectedBandForDetail = it }
+                                    )
+                                    TimelineColumn(
+                                        items = item.signings, 
+                                        blockStart = blockStart, 
+                                        modifier = Modifier.weight(1f).fillMaxHeight(),
+                                        onBandClick = { selectedBandForDetail = it }
+                                    )
                                 }
                             }
                             is FavoriteTimelineItem.FreeTimeItem -> {
@@ -224,7 +252,7 @@ fun FavoritesScreen(
                                         .padding(vertical = 6.dp, horizontal = 16.dp)
                                         .background(pauseBackground, shape = MaterialTheme.shapes.small)
                                         .padding(8.dp),
-                                    contentAlignment = Alignment.Center
+                                    contentAlignment = Alignment.Center,
                                 ) {
                                     val hours = item.durationInMinutes / 60
                                     val minutes = item.durationInMinutes % 60
@@ -241,6 +269,35 @@ fun FavoritesScreen(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun TimelineColumn(
+    items: List<FestivalBand>,
+    blockStart: LocalDateTime,
+    modifier: Modifier,
+    onBandClick: (FestivalBand) -> Unit
+) {
+    Column(modifier = modifier) {
+        var currentTime = blockStart
+        
+        items.forEach { band ->
+            val gapMinutes = Duration.between(currentTime, band.startTime).toMinutes()
+            if (gapMinutes > 0) {
+                Spacer(modifier = Modifier.height((gapMinutes * 3).toInt().dp))
+            }
+            
+            val durationMinutes = Duration.between(band.startTime, band.endTime).toMinutes().coerceAtLeast(1L)
+            CompactBandCard(
+                band = band, 
+                modifier = Modifier.height((durationMinutes * 3).toInt().dp).fillMaxWidth(),
+                isConflict = true,
+                onClick = { onBandClick(band) }
+            )
+            
+            currentTime = band.endTime
         }
     }
 }
