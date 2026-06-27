@@ -65,12 +65,43 @@ fun BandDetailDialog(band: FestivalBand, onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Text(
-                text = band.name.removeSuffix(" (Signing)"),
-                fontWeight = FontWeight.Bold,
-                fontSize = 22.sp,
-                color = textColor
-            )
+            Column(horizontalAlignment = Alignment.Start) {
+                Text(
+                    text = band.name.removeSuffix(" (Signing)"),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 22.sp,
+                    color = textColor
+                )
+                if (band.type == EventType.BAND && (band.countryEmoji.isNotEmpty() || band.genre.isNotEmpty() || band.foundedYear.isNotEmpty())) {
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        if (band.countryEmoji.isNotEmpty()) {
+                            Text(
+                                text = "${band.countryEmoji} ${band.countryName}",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                        if (band.genre.isNotEmpty()) {
+                            Text(
+                                text = "🎸 ${band.genre}",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                        if (band.foundedYear.isNotEmpty()) {
+                            Text(
+                                text = "📅 Gegründet: ${band.foundedYear}",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+                }
+            }
         },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
