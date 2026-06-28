@@ -14,11 +14,17 @@ class NotificationReceiver : BroadcastReceiver() {
         val stage = intent.getStringExtra("STAGE") ?: "Bühne"
         val minutesBefore = intent.getIntExtra("MINUTES_BEFORE", 5)
         val notificationId = intent.getIntExtra("NOTIFICATION_ID", 0)
+        val isSigning = intent.getBooleanExtra("IS_SIGNING", false)
 
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val channelId = "rockharz_alerts"
 
-        val channel = NotificationChannel(channelId, "Festival Wecker", NotificationManager.IMPORTANCE_HIGH)
+        val channel = NotificationChannel(channelId, "Festival Wecker", NotificationManager.IMPORTANCE_HIGH).apply {
+            description = "Benachrichtigungen für Band-Starts"
+            enableLights(true)
+            enableVibration(true)
+            lockscreenVisibility = NotificationCompat.VISIBILITY_PUBLIC
+        }
         notificationManager.createNotificationChannel(channel)
 
         // Intent zum Öffnen der App (MainActivity)
@@ -32,10 +38,17 @@ class NotificationReceiver : BroadcastReceiver() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
         )
 
+        val title = if (isSigning) "Autogrammstunde startet! ✍️" else "Gleich geht's los! 🎸"
+        val contentText = if (isSigning) {
+            "Die Autogrammstunde von $bandName startet gleich!"
+        } else {
+            "$bandName spielt in $minutesBefore Minuten auf der $stage!"
+        }
+
         val notification = NotificationCompat.Builder(context, channelId)
-            .setSmallIcon(android.R.drawable.ic_lock_idle_alarm) // Nutzt ein Standard-System-Wecker-Icon
-            .setContentTitle("Gleich geht's los! 🎸")
-            .setContentText("$bandName spielt in $minutesBefore Minuten auf der $stage!")
+            .setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
+            .setContentTitle(title)
+            .setContentText(contentText)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)

@@ -52,10 +52,10 @@ val rockharz2026Bands = listOf(
     FestivalBand("18", "Decapitated", "Dark Stage", LocalDateTime.of(2026, 7, 2, 17, 50), LocalDateTime.of(2026, 7, 2, 18, 40), countryEmoji = "🇵🇱", countryName = "Polen", genre = "Technical Death Metal", foundedYear = "1996"),
     FestivalBand("19", "Betontod", "Rock Stage", LocalDateTime.of(2026, 7, 2, 18, 45), LocalDateTime.of(2026, 7, 2, 19, 35), countryEmoji = "🇩🇪", countryName = "Deutschland", genre = "Punk Rock", foundedYear = "1990"),
     FestivalBand("20", "Agnostic Front", "Dark Stage", LocalDateTime.of(2026, 7, 2, 19, 40), LocalDateTime.of(2026, 7, 2, 20, 30), countryEmoji = "🇺🇸", countryName = "USA", genre = "Hardcore Punk", foundedYear = "1980"),
-    FestivalBand("21", "Hämatom", "Rock Stage", LocalDateTime.of(2026, 7, 2, 20, 35), LocalDateTime.of(2026, 7, 2, 21, 35), countryEmoji = "🇩🇪", countryName = "Deutschland", genre = "Groove Metal / NDH", foundedYear = "2004"),
+    FestivalBand("21", "Dominum", "Rock Stage", LocalDateTime.of(2026, 7, 2, 20, 35), LocalDateTime.of(2026, 7, 2, 21, 35), countryEmoji = "🇩🇪", countryName = "Deutschland", genre = "Power Metal", foundedYear = "2022"),
     FestivalBand("22", "Avatar", "Dark Stage", LocalDateTime.of(2026, 7, 2, 21, 40), LocalDateTime.of(2026, 7, 2, 22, 40), countryEmoji = "🇸🇪", countryName = "Schweden", genre = "Melodic Death/Alternative", foundedYear = "2001"),
     FestivalBand("23", "Alice Cooper", "Rock Stage", LocalDateTime.of(2026, 7, 2, 22, 45), LocalDateTime.of(2026, 7, 3, 0, 0), countryEmoji = "🇺🇸", countryName = "USA", genre = "Hard Rock / Shock Rock", foundedYear = "1964"),
-    FestivalBand("24", "Dominum", "Dark Stage", LocalDateTime.of(2026, 7, 3, 0, 5), LocalDateTime.of(2026, 7, 3, 1, 0), countryEmoji = "🇩🇪", countryName = "Deutschland", genre = "Power Metal", foundedYear = "2022"),
+    FestivalBand("24", "Hämatom", "Dark Stage", LocalDateTime.of(2026, 7, 3, 0, 5), LocalDateTime.of(2026, 7, 3, 1, 0), countryEmoji = "🇩🇪", countryName = "Deutschland", genre = "Groove Metal / NDH", foundedYear = "2004"),
 
     // FRIDAY
     FestivalBand("25", "Rodeo 5000", "Rock Stage", LocalDateTime.of(2026, 7, 3, 11, 20), LocalDateTime.of(2026, 7, 3, 11, 50), countryEmoji = "🇩🇪", countryName = "Deutschland", genre = "Country/Folk Rock", foundedYear = "2021"),
@@ -111,8 +111,8 @@ val rockharz2026Bands = listOf(
     FestivalBand("sig_13", "Sagenbringer (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 2, 16, 30), LocalDateTime.of(2026, 7, 2, 17, 0), type = EventType.SIGNING),
     FestivalBand("sig_14", "Mittel Alta (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 2, 17, 0), LocalDateTime.of(2026, 7, 2, 17, 30), type = EventType.SIGNING),
     FestivalBand("sig_15", "Stahlmann (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 2, 17, 30), LocalDateTime.of(2026, 7, 2, 18, 0), type = EventType.SIGNING),
-    FestivalBand("sig_16", "Hämatom (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 2, 18, 0), LocalDateTime.of(2026, 7, 2, 18, 30), type = EventType.SIGNING),
-    FestivalBand("sig_17", "Dominum (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 2, 20, 0), LocalDateTime.of(2026, 7, 2, 20, 30), type = EventType.SIGNING),
+    FestivalBand("sig_17", "Dominum (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 2, 18, 0), LocalDateTime.of(2026, 7, 2, 18, 30), type = EventType.SIGNING),
+    FestivalBand("sig_16", "Hämatom (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 2, 19, 0), LocalDateTime.of(2026, 7, 2, 19, 30), type = EventType.SIGNING),
 
     // Friday
     FestivalBand("sig_18", "Cypecore (Signing)", "Signing Area", LocalDateTime.of(2026, 7, 3, 11, 30), LocalDateTime.of(2026, 7, 3, 12, 0), type = EventType.SIGNING),

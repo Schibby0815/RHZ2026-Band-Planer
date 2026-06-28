@@ -140,7 +140,7 @@ fun RockharzApp(
             run {
                 val savedFavoriteIds = sharedPreferences.getStringSet("favorite_bands", emptySet()) ?: emptySet()
                 rockharz2026Bands.map { band ->
-                    if (savedFavoriteIds.contains(band.id)) band.copy(isFavorite = true) else band
+                    band.copy(isFavorite = savedFavoriteIds.contains(band.id))
                 }
             },
         )

@@ -93,6 +93,7 @@ fun scheduleNotification(context: Context, band: FestivalBand, minutesBefore: In
         putExtra("STAGE", if (band.type == EventType.SIGNING) "Autogrammstunde" else band.stage)
         putExtra("MINUTES_BEFORE", minutesBefore)
         putExtra("NOTIFICATION_ID", band.id.hashCode())
+        putExtra("IS_SIGNING", band.type == EventType.SIGNING)
     }
 
     val pendingIntent = PendingIntent.getBroadcast(
@@ -111,12 +112,14 @@ fun scheduleNotification(context: Context, band: FestivalBand, minutesBefore: In
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 if (alarmManager.canScheduleExactAlarms()) {
-                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
+                    val info = AlarmManager.AlarmClockInfo(triggerTime, pendingIntent)
+                    alarmManager.setAlarmClock(info, pendingIntent)
                 } else {
                     alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
                 }
             } else {
-                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
+                val info = AlarmManager.AlarmClockInfo(triggerTime, pendingIntent)
+                alarmManager.setAlarmClock(info, pendingIntent)
             }
         } catch (e: SecurityException) {
             e.printStackTrace()

@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.edit
+import com.rhz2026bandplaner.data.EventType
 import com.rhz2026bandplaner.data.FavoriteTimelineItem
 import com.rhz2026bandplaner.data.FestivalBand
 import com.rhz2026bandplaner.logic.buildFavoriteTimeline
@@ -68,6 +69,9 @@ fun RunningOrderScreen(
             stickyHeader {
                 val headerTextColor = MaterialTheme.colorScheme.onSecondaryContainer
                 val headerBgColor = MaterialTheme.colorScheme.secondaryContainer
+                
+                val favoriteBandsCount = bandsInDay.count { it.isFavorite && it.type == EventType.BAND }
+                val favoriteSigningsCount = bandsInDay.count { it.isFavorite && it.type == EventType.SIGNING }
 
                 Box(
                     modifier = Modifier
@@ -93,7 +97,26 @@ fun RunningOrderScreen(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(text = displayDate, fontWeight = FontWeight.Bold, color = headerTextColor)
-                        Text(text = if (isCollapsed) "▶" else "▼", color = headerTextColor, fontWeight = FontWeight.Bold)
+                        
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            if (favoriteBandsCount > 0) {
+                                Text(
+                                    text = "🎸 $favoriteBandsCount",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = headerTextColor,
+                                    modifier = Modifier.padding(end = 8.dp)
+                                )
+                            }
+                            if (favoriteSigningsCount > 0) {
+                                Text(
+                                    text = "✍️ $favoriteSigningsCount",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = headerTextColor,
+                                    modifier = Modifier.padding(end = 8.dp)
+                                )
+                            }
+                            Text(text = if (isCollapsed) "▶" else "▼", color = headerTextColor, fontWeight = FontWeight.Bold)
+                        }
                     }
                 }
             }
@@ -160,10 +183,18 @@ fun FavoritesScreen(
             sortedDays.forEach { localDate ->
                 val dateKey = localDate.toString()
                 val isCollapsed = dateKey in collapsedFavoritesList
+                
+                val bandsInDay = favorites.filter { band ->
+                    val festivalDay = if (band.startTime.hour < 5) band.startTime.toLocalDate().minusDays(1) else band.startTime.toLocalDate()
+                    festivalDay == localDate
+                }
 
                 stickyHeader {
                     val headerTextColor = MaterialTheme.colorScheme.onSecondaryContainer
                     val headerBgColor = MaterialTheme.colorScheme.secondaryContainer
+                    
+                    val favoriteBandsCount = bandsInDay.count { it.type == EventType.BAND }
+                    val favoriteSigningsCount = bandsInDay.count { it.type == EventType.SIGNING }
 
                     Box(
                         modifier = Modifier
@@ -190,16 +221,31 @@ fun FavoritesScreen(
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Text(text = displayDate, fontWeight = FontWeight.Bold, color = headerTextColor)
-                            Text(text = if (isCollapsed) "▶" else "▼", color = headerTextColor, fontWeight = FontWeight.Bold)
+                            
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                if (favoriteBandsCount > 0) {
+                                    Text(
+                                        text = "🎸 $favoriteBandsCount",
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = headerTextColor,
+                                        modifier = Modifier.padding(end = 8.dp)
+                                    )
+                                }
+                                if (favoriteSigningsCount > 0) {
+                                    Text(
+                                        text = "✍️ $favoriteSigningsCount",
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = headerTextColor,
+                                        modifier = Modifier.padding(end = 8.dp)
+                                    )
+                                }
+                                Text(text = if (isCollapsed) "▶" else "▼", color = headerTextColor, fontWeight = FontWeight.Bold)
+                            }
                         }
                     }
                 }
 
                 if (!isCollapsed) {
-                    val bandsInDay = favorites.filter { band ->
-                        val festivalDay = if (band.startTime.hour < 5) band.startTime.toLocalDate().minusDays(1) else band.startTime.toLocalDate()
-                        festivalDay == localDate
-                    }
                     val timelineForDay = buildFavoriteTimeline(bandsInDay)
 
                     items(timelineForDay) { item ->
